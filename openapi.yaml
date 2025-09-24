@@ -1,0 +1,88 @@
+openapi: 3.0.0
+info:
+  title: Student Records API
+  version: 1.0.0
+  description: A simple API for managing student records
+servers:
+  - url: http://localhost:3000
+
+paths:
+  /students:
+    get:
+      summary: Get all students
+      responses:
+        "200":
+          description: A list of students
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Student"
+              example:
+                - id: 1
+                  name: "Ignatious.T "
+                  age: 21
+                  course: "Software Engineering"
+                - id: 2
+                  name: "Davis.k"
+                  age: 22
+                  course: "Computer Science"
+
+    post:
+      summary: Add a new student
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewStudent"
+      responses:
+        "201":
+          description: Student created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Student"
+
+  /students/{id}:
+    get:
+      summary: Get a student by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: A single student record
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Student"
+        "404":
+          description: Student not found
+
+components:
+  schemas:
+    Student:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        age:
+          type: integer
+        course:
+          type: string
+    NewStudent:
+      type: object
+      properties:
+        name:
+          type: string
+        age:
+          type: integer
+        course:
+          type: string
